@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name="PyBypasser",
-    version="0.0.1",
+    version="0.0.2",
     author="Hugo GALAN",
     url="https://github.com/HForGames/PyBypasser",
     download_url="https://github.com/HForGames/PyBypasser",
@@ -14,6 +14,5 @@ setup(
                  "License :: OSI Approved :: MIT License",
                  "Programming Language :: Python",
                  'Programming Language :: Python :: 3',
-                 "Topic :: Software Development :: Libraries :: Python Modules",
-                 ],
+                 "Topic :: Software Development :: Libraries :: Python Modules"],
 )
