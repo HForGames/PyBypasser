@@ -1,3 +1,6 @@
 dist
 PyBypasser.egg-info
 .idea
+requirements.txt
+test.py
+__pycache__
