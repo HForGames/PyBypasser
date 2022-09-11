@@ -1,6 +1,6 @@
-# Pypasser
+# PyBypasser
 
-Pypasser is a package that bypass links
+PyBypasser is a package that bypass links
 
 You can install it with this command
 ```bash
