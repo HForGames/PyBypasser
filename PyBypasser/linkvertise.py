@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from .utils import utils
 
 
-class linkvertise:
+class Linkvertise:
     def __init__(self, debug=False, proxy=None):
         self.path = None
         self.urlparse = None
@@ -28,9 +28,11 @@ class linkvertise:
         response = self.__utils.request(200, {
             "method": "GET",
             "url": f"https://publisher.linkvertise.com/api/v1/redirect/link/static{self.base_path}?origin=&resolution=1920x1080",
-            "headers": {'user-agent': utils.getUserAgent(), "Accept": "application/json"}
+            "headers": {'user-agent': self.__utils.userAgent, "Accept": "application/json"}
         })
         data = response.json()
+        if data["success"] == False and data["messages"][0] == "Too Many Attempts.":
+            raise Exception("Too Many Attemps.")
         target_type = data["data"]["link"]["target_type"].lower()
         if target_type == "url":
             target_type = "target"
@@ -57,7 +59,7 @@ class linkvertise:
                 "accept": 'application/json',
                 'content-type': 'application/json',
                 'sec-ch-ua-mobile': '?0',
-                'user-agent': utils.getUserAgent(),
+                'user-agent': self.__utils.userAgent,
                 'sec-ch-ua-platform': '"Windows"',
                 'origin': 'https://linkvertise.com',
                 'sec-fetch-site': 'same-site',

@@ -15,4 +15,9 @@ setup(
                  "Programming Language :: Python",
                  'Programming Language :: Python :: 3',
                  "Topic :: Software Development :: Libraries :: Python Modules"],
+    install_requires=["certifi==2022.9.14"
+                      "charset-normalizer==2.1.1",
+                      "idna==3.4",
+                      "requests==2.28.1",
+                      "urllib3==1.26.12"]
 )

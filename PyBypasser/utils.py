@@ -6,6 +6,7 @@ class utils:
     def __init__(self, debug=False, proxy=None):
         self.debug = debug
         self.proxy = proxy
+        self.userAgent = 'Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36'
 
     def print_debug(self, message):
         if self.debug:
@@ -16,17 +17,13 @@ class utils:
             request_params["proxies"] = self.proxy
         self.print_debug(f"request : {request_params}")
         response = requests.request(**request_params)
-        if response.status_code != status_code_should:
+        if status_code_should is not None and response.status_code != status_code_should:
             raise ValueError(f"status code should be 200 but is {response.status_code}")
         return response
 
     @staticmethod
     def raise_not_own():
         raise Exception("This url can't be bypass by this class")
-
-    @staticmethod
-    def getUserAgent():
-        return 'Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36'
 
     @staticmethod
     def encode_base64(string):

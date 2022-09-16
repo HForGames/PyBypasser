@@ -1,1 +1,2 @@
-from .linkvertise import linkvertise
+from .linkvertise import Linkvertise
+from .redirect import Redirect
