@@ -4,15 +4,15 @@ from urllib.parse import urlparse
 from .utils import utils
 
 
-class Linkvertise:
+class Linkvertise(utils):
     def __init__(self, debug=False, proxy=None):
+        super().__init__(debug, proxy)
         self.path = None
         self.urlparse = None
-        self.__utils = utils(debug=debug, proxy=proxy)
 
     def is_own(self, url):
         self.urlparse = urlparse(url)
-        self.__utils.print_debug(f"urlparse : {self.urlparse}")
+        self.print_debug(f"urlparse : {self.urlparse}")
         return self.urlparse.netloc == "linkvertise.com"
 
     def path_split(self, index=0):
@@ -21,7 +21,7 @@ class Linkvertise:
 
     def __get_api_redirect_link(self):
         self.path_split()
-        self.__utils.print_debug(f"path split : {self.path}")
+        self.print_debug(f"path split : {self.path}")
         if len(self.path) < 3:
             raise SyntaxError("url is miss format")
         self.base_path = '/'.join(self.path[0:3])
@@ -39,7 +39,7 @@ class Linkvertise:
         return response.cookies, data["data"]["link"]["id"], target_type, data["user_token"]
 
     def __get_paper_ostrichesica(self):
-        response = self.__utils.request(200, {
+        response = self.request(200, {
             "method": "GET",
             "url": "https://paper.ostrichesica.com/ct?id=14473",
             "headers": {"referer": "https://linkvertise.com/"}
@@ -49,7 +49,7 @@ class Linkvertise:
         return cq_token
 
     def __post_traffic_validation(self, cookies, cq_token, linkvertise_id, user_token):
-        response = self.__utils.request(200, {
+        response = self.request(200, {
             "method": "POST",
             "url": f"https://publisher.linkvertise.com/api/v1/redirect/link{self.base_path}/traffic-validation?X-Linkvertise-UT={user_token}",
             "headers": {
@@ -74,7 +74,7 @@ class Linkvertise:
         data = response.json()
         if "TARGET" not in data["data"]["tokens"]:
             raise Exception("recaptched")
-        base64 = self.__utils.encode_base64(json.dumps({
+        base64 = self.encode_base64(json.dumps({
             "timestamp": int(time.time() * 1000),
             "random": "6548307",
             "link_id": linkvertise_id
@@ -113,11 +113,11 @@ class Linkvertise:
         if not self.is_own(url):
             utils.raise_not_own()
         cookies, linkvertise_id, target_type, user_token = self.__get_api_redirect_link()
-        self.__utils.print_debug(f"cookies : {cookies}\nlinkvertise_id : {linkvertise_id}\ntype : {target_type}\nuser_token : {user_token}")
+        self.print_debug(f"cookies : {cookies}\nlinkvertise_id : {linkvertise_id}\ntype : {target_type}\nuser_token : {user_token}")
         cq_token = self.__get_paper_ostrichesica()
-        self.__utils.print_debug(f"cq_token : {cq_token}")
+        self.print_debug(f"cq_token : {cq_token}")
         base64, cookies, token_target = self.__post_traffic_validation(cookies, cq_token, linkvertise_id, user_token)
-        self.__utils.print_debug(f"base64 : {base64}\ncookies : {cookies}\ntoken_target : {token_target}")
+        self.print_debug(f"base64 : {base64}\ncookies : {cookies}\ntoken_target : {token_target}")
         response_url = self.__post_redirect_link(base64, cookies, target_type, token_target, user_token)
-        self.__utils.print_debug(f"response url : {response_url}")
+        self.print_debug(f"response url : {response_url}")
         return response_url

@@ -21,6 +21,9 @@ class utils:
             raise ValueError(f"status code should be 200 but is {response.status_code}")
         return response
 
+    def change_proxy(self, proxy):
+        self.proxy = proxy
+
     @staticmethod
     def raise_not_own():
         raise Exception("This url can't be bypass by this class")
