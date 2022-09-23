@@ -1,6 +1,8 @@
 from urllib.parse import urlparse
 from PyBypasser.utils import utils
-
+from bs4 import BeautifulSoup
+import json
+from pprint import pprint
 
 class Linktr(utils):
     def __init__(self, debug=False, proxy=None):
@@ -20,4 +22,7 @@ class Linktr(utils):
                 "User-Agent": self.userAgent
             }
         })
-        print(response.text)
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        links = json.loads(soup.find_all("script")[-1].getText())
+        pprint(links)

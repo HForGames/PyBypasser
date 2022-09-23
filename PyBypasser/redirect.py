@@ -23,4 +23,3 @@ class Redirect(utils):
             }
         })
         return response.url
-

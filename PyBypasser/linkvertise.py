@@ -25,10 +25,10 @@ class Linkvertise(utils):
         if len(self.path) < 3:
             raise SyntaxError("url is miss format")
         self.base_path = '/'.join(self.path[0:3])
-        response = self.__utils.request(200, {
+        response = self.request(200, {
             "method": "GET",
             "url": f"https://publisher.linkvertise.com/api/v1/redirect/link/static{self.base_path}?origin=&resolution=1920x1080",
-            "headers": {'user-agent': self.__utils.userAgent, "Accept": "application/json"}
+            "headers": {'user-agent': self.userAgent, "Accept": "application/json"}
         })
         data = response.json()
         if data["success"] == False and data["messages"][0] == "Too Many Attempts.":
@@ -59,7 +59,7 @@ class Linkvertise(utils):
                 "accept": 'application/json',
                 'content-type': 'application/json',
                 'sec-ch-ua-mobile': '?0',
-                'user-agent': self.__utils.userAgent,
+                'user-agent': self.userAgent,
                 'sec-ch-ua-platform': '"Windows"',
                 'origin': 'https://linkvertise.com',
                 'sec-fetch-site': 'same-site',
@@ -82,7 +82,7 @@ class Linkvertise(utils):
         return base64, response.cookies, data["data"]["tokens"]["TARGET"]
 
     def __post_redirect_link(self, base64, cookies, target_type, token_target, user_token):
-        response = self.__utils.request(200, {
+        response = self.request(200, {
             "method": "POST",
             "url": f"https://publisher.linkvertise.com/api/v1/redirect/link{self.base_path}/{target_type}?X-Linkvertise-UT={user_token}",
             "headers": {
